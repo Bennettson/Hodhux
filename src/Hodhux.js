@@ -21,13 +21,13 @@ var maxNbOfPoints = 1920;       //Max number of points the chart will contain
 //==================================================================================================
 // Fields
 //==================================================================================================
-var icpExpLen;                 	//Length of the current clamp experiment (in ms)
-var vcpExpLen;                 	//Length of the voltage clamp experiment (in ms)
+var icpExpLen;                  //Length of the current clamp experiment (in ms)
+var vcpExpLen;                  //Length of the voltage clamp experiment (in ms)
 
-var icpStimLen;                	//Length of the stimulation in the current clamp experiment (in ms)
-var vcpStimLen;                	//Length of the stimulation in the voltage clamp experiment (in ms)
-var icpCur;                    	//Injected current during the current clamp experiment (in mA/cm²)
-var vcpVlt;                    	//Injected voltage during the voltage clamp experimens (in mV)
+var icpStimLen;                 //Length of the stimulation in the current clamp experiment (in ms)
+var vcpStimLen;                 //Length of the stimulation in the voltage clamp experiment (in ms)
+var icpCur;                     //Injected current during the current clamp experiment (in mA/cm²)
+var vcpVlt;                     //Injected voltage during the voltage clamp experimens (in mV)
 
 var naIn;                       //Concentration of Na+ ions inside the cell (in mM)
 var naOut;                      //Concentration of Na+ ions outside the cell (in mM)
@@ -42,12 +42,12 @@ var useTtx;                     //whether or not we block Na+ channels
 var useTea;                     //whether or not we block K+ channels
 
 var icpIds = [
-	"icpExpLenFld", "icpStimLenFld", "icpCurFld", "showIcpENaFld", "showIcpEKFld",
-	"showIcpIStimFld", "showIcpEmFld", "showIcpgNaFld", "showIcpgKFld"
+    "icpExpLenFld", "icpStimLenFld", "icpCurFld", "showIcpENaFld", "showIcpEKFld",
+    "showIcpIStimFld", "showIcpEmFld", "showIcpgNaFld", "showIcpgKFld"
 ];
 var vcpIds = [
-	"vcpExpLenFld", "vcpStimLenFld", "vcpVltFld", "useTtxFld", "useTeaFld", "showVcpINaFld",
-	"showVcpIKFld", "showVcpImFld", "showVcpEStimFld", "showVcpgNaFld", "showVcpgKFld"
+    "vcpExpLenFld", "vcpStimLenFld", "vcpVltFld", "useTtxFld", "useTeaFld", "showVcpINaFld",
+    "showVcpIKFld", "showVcpImFld", "showVcpEStimFld", "showVcpgNaFld", "showVcpgKFld"
 ];
 
 
@@ -57,9 +57,9 @@ var vcpIds = [
 var minIcpX, maxIcpX, minIcpY, maxIcpY, minVcpX, maxVcpX, minVcpY, maxVcpY;
 function Reset() { 
     var expIsIcp = document.getElementById("exp").value == "icp";
-	if (expIsIcp) { minIcpX = maxIcpX = minIcpY = maxIcpY = null; }
-	else { minVcpX = maxVcpX = minVcpY = maxVcpY = null; }
-	Main();
+    if (expIsIcp) { minIcpX = maxIcpX = minIcpY = maxIcpY = null; }
+    else { minVcpX = maxVcpX = minVcpY = maxVcpY = null; }
+    Main();
 }
 
 
@@ -71,9 +71,9 @@ function Main(e) {
     var expIsIcp = document.getElementById("exp").value == "icp";
     var icpDisplay = expIsIcp ? "block" : "none", vcpDisplay = expIsIcp ? "none" : "block";
     for (var i = 0; i < icpIds.length; i++)
-		document.getElementById(icpIds[i]).style.display = icpDisplay;
+        document.getElementById(icpIds[i]).style.display = icpDisplay;
     for (var i = 0; i < vcpIds.length; i++)
-		document.getElementById(vcpIds[i]).style.display = vcpDisplay;
+        document.getElementById(vcpIds[i]).style.display = vcpDisplay;
     
     if (e != null && e.hasAttribute("type")) {
         if (e.type == "button") { e.value = (e.value == "YES") ? "NO" : "YES"; }
@@ -139,7 +139,7 @@ function PlotCurrentClamp() {
     var em = emRest;//starting point
             
     var timeToPush = Math.ceil(icpExpLen / maxNbOfPoints / dt), Data = [];
-	
+    
     for (var t = 0, p = 0; t < icpExpLen; t += dt) {
         aM = AlphaM(em - emRest); bM = BetaM(em - emRest); m += dt * (aM - m * (aM + bM));
         aH = AlphaH(em - emRest); bH = BetaH(em - emRest); h += dt * (aH - h * (aH + bH));
@@ -157,31 +157,31 @@ function PlotCurrentClamp() {
         if (p++ == timeToPush) { Data.push([t.toFixed(3), eNa, eK, iInj, em, gNa, gK]); p=0; }
     }
     
-	curMinIcpX = (minIcpX == null) ? 0 : minIcpX;
-	curMaxIcpX = (maxIcpX == null) ? icpExpLen : maxIcpX;
+    curMinIcpX = (minIcpX == null) ? 0 : minIcpX;
+    curMaxIcpX = (maxIcpX == null) ? icpExpLen : maxIcpX;
     
     g = new Dygraph( document.getElementById("pan3"), Data, {
             title: "CURRENT CLAMP",
             visibility: [showIcpENa, showIcpEK, showIcpIStim, showIcpEm, showIcpgNa, showIcpgK],
             labels: ["Time (ms)", "ENa (mV)", "EK (mV)", "IStim (µA/cm²)", "Em (mV)",
-				"gNa (mS/cm²)", "gK (mS/cm²)"],
+                "gNa (mS/cm²)", "gK (mS/cm²)"],
             colors: ["#ffca00", "#753a48", "#007034", "#1352a2", "#dc2742", "#5c8a8d"], 
-			isZoomedIgnoreProgrammaticZoom: false,
+            isZoomedIgnoreProgrammaticZoom: false,
             labelsSeparateLines: true,
-			strokeWidth: 3,
+            strokeWidth: 3,
             axes: {
                 x: { valueFormatter: function(x) { return x + " ms"; } },
                 y: { valueFormatter: function(y) { return y.toFixed(1); } }
             },
-			dateWindow: [curMinIcpX, curMaxIcpX],
-			valueRange: [minIcpY, maxIcpY],
+            dateWindow: [curMinIcpX, curMaxIcpX],
+            valueRange: [minIcpY, maxIcpY],
             zoomCallback : function(minX, maxX, minMaxY) { 
-				minIcpX = minX;
-				maxIcpX = maxX;
-				minIcpY = minMaxY[0][0];
-				maxIcpY = minMaxY[0][1];
-			}
-		}
+                minIcpX = minX;
+                maxIcpX = maxX;
+                minIcpY = minMaxY[0][0];
+                maxIcpY = minMaxY[0][1];
+            }
+        }
     );
 }
 
@@ -198,7 +198,7 @@ function PlotVoltageClamp() {
     var iC = 0, iTot = 0;
                 
     var timeToPush = Math.ceil(vcpExpLen / maxNbOfPoints / dt), Data = [];
-	
+    
     for (var t = 0, p = 0; t < vcpExpLen; t += dt) {        
         aM = AlphaM(em - emRest); bM = BetaM(em - emRest); m += dt * (aM - m * (aM + bM));
         aH = AlphaH(em - emRest); bH = BetaH(em - emRest); h += dt * (aH - h * (aH + bH));
@@ -210,66 +210,66 @@ function PlotVoltageClamp() {
         var iK = gK * (em - eK);
         var iLeak = gLeak * (em - eLeak);        
         var eE = (t >= 1 && t < 1 + vcpStimLen) ? vcpVlt : emRest;
-		
-		//OK, here I have a doubt. Version 1 seems to be the most scientifically accurate (although
-		//I might have made a mistake somewhere, I'm not sure...). But unfortunately Version 1 is
-		//also unstable (try it, you'll see). So I went with Version 2 instead. In Version 2,
-		//peakHeight*(eE-em) is an approximation of idealIInj (of Version 1) because peakHeight
-		//approximates gain/rA. The main difference between the two versions lies in the behavior of
-		//em (you can replace eE by em in the Data.push() to see that simply), there's a little bump
-		//in Version 1. The other difference is that in Version 1 iTot is computed directly, whereas
-		//in Version 2 iTot depends on the previous calculation of iC (the capacitive current).
-		
-		// VERSION 1:
+        
+        //OK, here I have a doubt. Version 1 seems to be the most scientifically accurate (although
+        //I might have made a mistake somewhere, I'm not sure...). But unfortunately Version 1 is
+        //also unstable (try it, you'll see). So I went with Version 2 instead. In Version 2,
+        //peakHeight*(eE-em) is an approximation of idealIInj (of Version 1) because peakHeight
+        //approximates gain/rA. The main difference between the two versions lies in the behavior of
+        //em (you can replace eE by em in the Data.push() to see that simply), there's a little bump
+        //in Version 1. The other difference is that in Version 1 iTot is computed directly, whereas
+        //in Version 2 iTot depends on the previous calculation of iC (the capacitive current).
+        
+        // VERSION 1:
         //var peakWidth = 0.01, gain = 2e5, rA = 1e3;//rA is the access resistance
         //var v0 = gain * (eE - em), idealIInj = (v0 - em) / rA;
         //iTot += (dt/peakWidth) * (idealIInj - iTot);        
         //em += (dt / capacitance) * (iTot - iNa - iK - iLeak);
-		
-		// VERSION 2:
-		var peakWidth = 0.01, peakHeight = 200;
-		iC += (dt/peakWidth) * (peakHeight * (eE - em) - iC);        
+        
+        // VERSION 2:
+        var peakWidth = 0.01, peakHeight = 200;
+        iC += (dt/peakWidth) * (peakHeight * (eE - em) - iC);        
         em += (dt/peakWidth) * (eE - em);
-		iTot = iC + iNa + iK + iLeak;
-		
+        iTot = iC + iNa + iK + iLeak;
+        
         if (p++ == timeToPush) { Data.push([t.toFixed(3), iNa, iK, iTot, em, gNa, gK]); p=0; }
     }
     
-	if (minVcpX == null) { minVcpX = 0; }
-	if (maxVcpX == null) { maxVcpX = vcpExpLen; }
+    if (minVcpX == null) { minVcpX = 0; }
+    if (maxVcpX == null) { maxVcpX = vcpExpLen; }
     
     g = new Dygraph( document.getElementById("pan3"), Data, {
             title: "VOLTAGE CLAMP",
             visibility: [showVcpINa, showVcpIK, showVcpIm, showVcpEStim, showVcpgNa, showVcpgK],
             labels: ["Time (ms)", "INa (µA/cm²)", "IK (µA/cm²)", "Im (µA/cm²)", "EStim (mV)",
-				"gNa (mS/cm²)", "gK (mS/cm²)"],
+                "gNa (mS/cm²)", "gK (mS/cm²)"],
             colors: ["#ffca00", "#753a48", "#007034", "#1352a2", "#dc2742", "#5c8a8d"], 
             labelsSeparateLines: true,
-			strokeWidth: 3,
+            strokeWidth: 3,
             axes: {
                 x: { valueFormatter: function(x) { return x + " ms"; } },
                 y: { valueFormatter: function(y) { return y.toFixed(1); } }
             },
-			dateWindow: [minVcpX, maxVcpX],
-			valueRange: [minVcpY, maxVcpY],
+            dateWindow: [minVcpX, maxVcpX],
+            valueRange: [minVcpY, maxVcpY],
             zoomCallback : function(minX, maxX, minMaxY) { 
-				minVcpX = minX;
-				maxVcpX = maxX;
-				minVcpY = minMaxY[0][0];
-				maxVcpY = minMaxY[0][1];
-			}
+                minVcpX = minX;
+                maxVcpX = maxX;
+                minVcpY = minMaxY[0][0];
+                maxVcpY = minMaxY[0][1];
+            }
         }
     );
 }
 
 
 function AlphaN(v) {
-	if (v === 10) { v += epsilon; }
-	return (10 - v) / (100 * (Math.exp((10 - v) / 10) - 1));
+    if (v === 10) { v += epsilon; }
+    return (10 - v) / (100 * (Math.exp((10 - v) / 10) - 1));
 }
 function AlphaM(v) {
-	if (v === 25) { v += epsilon; }
-	return (25 - v) / (10 * (Math.exp((25 - v) / 10) - 1));
+    if (v === 25) { v += epsilon; }
+    return (25 - v) / (10 * (Math.exp((25 - v) / 10) - 1));
 }
 function AlphaH(v) { return 0.07 * Math.exp(-v / 20); }
 function BetaN(v) { return 0.125 * Math.exp(-v / 80); }
