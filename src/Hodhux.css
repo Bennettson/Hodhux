@@ -1,0 +1,201 @@
+/*Compatibility*/
+* {
+    outline: none;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/*Architecture*/
+* {
+    position: relative;
+    margin: 0px;
+    padding: 0px;
+    border: 0px;
+    font-family: "Arial", sans-serif;
+    font-size: 11px;
+}
+html {
+    height: 100%;
+    width: 100%;
+}
+body {
+    height: 100%;
+    width: 100%;
+    min-height: 648px;
+    min-width: 864px;
+}
+.pan {
+    background-color: #F5F5F5;
+    border: solid #CCCCCC 2px;
+    border-radius: 8px;
+}
+#pan1 {
+    position: absolute;
+    top: 16px;
+    right: auto;
+    bottom: 94px;
+    left: 16px;
+    width: 222px;
+}
+#innerPan1 {
+    position: absolute;
+    top: 11px;
+    right: 11px;
+    bottom: 11px;
+    left: 11px;
+    width: 200px;
+}
+#pan2 {
+    position: absolute;
+    top: auto;
+    right: auto;
+    bottom: 16px;
+    left: 16px;
+    width: 222px;
+    height: 60px;
+}
+#innerPan2 {
+    position: absolute;
+    top: 11px;
+    right: 11px;
+    bottom: 11px;
+    left: 11px;
+    width: 200px;
+    text-align: center;
+}
+#pan3 {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    bottom: 16px;
+    left: 256px;
+}
+
+/*Fields*/
+.fld {
+    top: 0px;
+    right: 0px;
+    bottom: auto;
+    left: 0px;
+    height: 20px;
+    margin: 0px 0px 6px 0px;
+}
+.fldLabel {
+    position: absolute;
+    top: 3px;
+    right: auto;
+    left: 0px;
+    height: 16px;
+    width: 88px;
+}
+.fldBox {
+    position: absolute;
+    top: 0px;
+    right: auto;
+    left: 88px;
+    height: 20px;
+    width: 88px;
+    background-color: inherit;
+}
+.fldInfo {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    left: auto;
+    height: 16px;
+    width: 16px;
+    margin: 1px 3px 1px 3px;
+    border: solid 1px;
+    border-radius: 16px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold;
+}
+.fldInfo:hover {
+    color: DimGray;
+    cursor: help;
+}
+.fldInfo:hover + .fldTooltip,
+.fldTooltip:hover {
+    transition-delay: 0.15s;
+    visibility: visible;
+    z-index: 999999;
+}
+.fldTooltip {
+    position: absolute;
+    top: -8px;
+    left: 200px;
+    bottom: auto;
+    padding: 11px;
+    z-index: -1;
+    background-color: #333333;
+    border-radius: 8px;
+    color: #F5F5F5;
+    visibility: hidden;
+    white-space: nowrap;
+}
+.fldTooltip-triangle {
+    position: absolute;
+    top: 8px;
+    left: -10px;
+    width: 0px;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-right: 10px solid #333333;
+}
+.separator {
+    top: 0px;
+    right: 0px;
+    bottom: auto;
+    left: 0px;
+    height: 1px;
+    margin: 0px 0px 6px 0px;
+    background-color: #CCCCCC;
+}
+.fldExplanation {
+    top: 0px;
+    right: 0px;
+    bottom: auto;
+    left: 0px;
+    text-align: center;
+}
+.invisibleSeparator {
+    background-color: inherit;
+    top: 0px;
+    right: 0px;
+    bottom: auto;
+    left: 0px;
+    height: 11px;
+}
+
+/*General*/
+.bold {
+    font-weight: bold;
+}
+.button:hover {
+    color: DimGray;
+    cursor: pointer;
+}
+.link {
+    color: Black;
+    text-decoration: none;
+}
+.link:hover {
+    color: DimGray;
+    cursor: pointer;
+}
+
+/*Legend*/
+.dygraph-legend {
+    left: auto !important;
+    right: 0px;
+    padding: 11px;
+    width: 160px !important;
+    background-color: #F5F5F5 !important;
+    border: solid #CCCCCC 2px;
+    border-radius: 8px;
+}
