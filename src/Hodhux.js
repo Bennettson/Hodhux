@@ -211,22 +211,6 @@ function PlotVoltageClamp() {
         var iLeak = gLeak * (em - eLeak);        
         var eE = (t >= 1 && t < 1 + vcpStimLen) ? vcpVlt : emRest;
         
-        //OK, here I have a doubt. Version 1 seems to be the most scientifically accurate (although
-        //I might have made a mistake somewhere, I'm not sure...). But unfortunately Version 1 is
-        //also unstable (try it, you'll see). So I went with Version 2 instead. In Version 2,
-        //peakHeight*(eE-em) is an approximation of idealIInj (of Version 1) because peakHeight
-        //approximates gain/rA. The main difference between the two versions lies in the behavior of
-        //em (you can replace eE by em in the Data.push() to see that simply), there's a little bump
-        //in Version 1. The other difference is that in Version 1 iTot is computed directly, whereas
-        //in Version 2 iTot depends on the previous calculation of iC (the capacitive current).
-        
-        // VERSION 1:
-        //var peakWidth = 0.01, gain = 2e5, rA = 1e3;//rA is the access resistance
-        //var v0 = gain * (eE - em), idealIInj = (v0 - em) / rA;
-        //iTot += (dt/peakWidth) * (idealIInj - iTot);        
-        //em += (dt / capacitance) * (iTot - iNa - iK - iLeak);
-        
-        // VERSION 2:
         var peakWidth = 0.01, peakHeight = 200;
         iC += (dt/peakWidth) * (peakHeight * (eE - em) - iC);        
         em += (dt/peakWidth) * (eE - em);
