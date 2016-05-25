@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8" />
+        <meta name="author" content="Billybill Bennettson">
+        <meta name="description" content="Simulation of the Hodgkin-Huxley Model">
+        <title>Simulation of the Hodgkin-Huxley Model</title>
+        <link rel="stylesheet" href="lib/normalize.min.css" />
+        <link rel="stylesheet" href="src/Hodhux.css" />
+    </head>
+    
+    <body>
+        <div id="pan1" class="pan">
+            <div id="innerPan1">
+                
+                <!-- Main fields -->
+                <div id="expFld" class="fld">
+                    <p class="fldLabel">Experience</p><select class="fldBox" id="exp" onchange="Main()"><option value="icp">Current Clamp</option><option value="vcp">Voltage Clamp</option></select>
+                    <p class="fldInfo">i</p><div class="fldTooltip"><div class="fldTooltip-triangle"></div>The experiment to simulate (either current clamp or voltage clamp).</div>
+                </div>
+                <div id="icpExpLenFld" class="fld">
+                    <p class="fldLabel">Exp. Length</p><input class="fldBox" type="number" value="16" min="3" max="200" id="icpExpLen" onchange="Reset(); Main(this);">
+                    <p class="fldInfo">i</p><div class="fldTooltip"><div class="fldTooltip-triangle"></div>Length of the current clamp experiment.</br>Default: 20ms. Mininum: 10ms. Maximum: 200ms.</div>
+                </div>
+                <div id="vcpExpLenFld" class="fld" style="display: none;">
+                    <p class="fldLabel">Exp. Length</p><input class="fldBox" type="number" value="16" min="3" max="200" id="vcpExpLen" onchange="Reset(); Main(this);">
+                    <p class="fldInfo">i</p><div class="fldTooltip"><div class="fldTooltip-triangle"></div>Length of the voltage clamp experiment.</br>Default: 20ms. Mininum: 10ms. Maximum: 200ms.</div>
+                </div>
+                <div class="separator"></div>
+                <div id="icpStimLenFld" class="fld">
+                    <p class="fldLabel">Stim. Length</sub></p><input class="fldBox" type="number" value="2" min="0" max="200" id="icpStimLen" onchange="Main(this);">
+                    <p class="fldInfo">i</p><div class="fldTooltip"><div class="fldTooltip-triangle"></div>Duration of the stimulation in the current clamp experiment.</br>Default: 2ms. Minimum: 0ms. Maximum: 200ms.</div>
+                </div>
+                <div id="vcpStimLenFld" class="fld" style="display: none;">
+                    <p class="fldLabel">Stim. Length</sub></p><input class="fldBox" type="number" value="10" min="0" max="200" id="vcpStimLen" onchange="Main(this);">
+                    <p class="fldInfo">i</p><div class="fldTooltip"><div class="fldTooltip-triangle"></div>Duration of the stimulation in the voltage clamp experiment.</br>Default: 10ms. Minimum: 0ms. Maximum: 200ms.</div>
+                </div>
+                <div id="icpCurFld" class="fld">
+                    <p class="fldLabel">Stim. Current</sub></p><input class="fldBox" type="number" value="8" min="-80" max="800" id="icpCur" onchange="Main(this);">
+                    <p class="fldInfo">i</p><div class="fldTooltip"><div class="fldTooltip-triangle"></div>Current injected into the cell during the stimulation.</br>Default: 8µA/cm<sup>2</sup>. Minimum: -80µA/cm<sup>2</sup>. Maximum: 800µA/cm<sup>2</sup>.</div>
+                </div>
+                <div id="vcpVltFld" class="fld" style="display: none;">
+                    <p class="fldLabel">Stim. Voltage</sub></p><input class="fldBox" type="number" value="0" min="-80" max="80" id="vcpVlt" onchange="Main(this);">
+                    <p class="fldInfo">i</p><div class="fldTooltip"><div class="fldTooltip-triangle"></div>Voltage at which the membrane potential is clamped.</br>Default: 0mV. Minimum: -80mV. Maximum: 80mV.</div>
+                </div>
+                <div class="separator"></div>
+                
+                
+                <!-- Ion concentrations for both experiments -->
+                <div id="naInFld" class="fld">
+                    <p class="fldLabel">[Na]<sub>i</sub></p><input class="fldBox" type="number" value="50" min="1" max="100" id="naIn" onchange="Main(this);">
+                    <p class="fldInfo">i</p><div class="fldTooltip"><div class="fldTooltip-triangle"></div>Intracellular concentration of Na<sup>+</sup> ions in both experiments.</br>Default: 50mM. Minimum: 1mM. Maximum: 100mM.</div>
+                </div>
+                <div id="naOutFld" class="fld">
+                    <p class="fldLabel">[Na]<sub>o</sub></p><input class="fldBox" type="number" value="440" min="100" max="750" id="naOut" onchange="Main(this);">
+                    <p class="fldInfo">i</p><div class="fldTooltip"><div class="fldTooltip-triangle"></div>Extracellular concentration of Na<sup>+</sup> ions in both experiments.</br>Default: 440mM. Minimum: 100mM. Maximum: 750mM.</div>
+                </div>
+                <div id="kInFld" class="fld">
+                    <p class="fldLabel">[K]<sub>i</sub></p><input class="fldBox" type="number" value="400" min="100" max="750" id="kIn" onchange="Main(this);">
+                    <p class="fldInfo">i</p><div class="fldTooltip"><div class="fldTooltip-triangle"></div>Intracellular concentration of K<sup>+</sup> ions in both experiments.</br>Default: 400mM. Minimum: 100mM. Maximum: 750mM.</div>
+                </div>
+                <div id="kOutFld" class="fld">
+                    <p class="fldLabel">[K]<sub>o</sub></p><input class="fldBox" type="number" value="20" min="1" max="100" id="kOut" onchange="Main(this);">
+                    <p class="fldInfo">i</p><div class="fldTooltip"><div class="fldTooltip-triangle"></div>Extracellular concentration of K<sup>+</sup> ions in both experiments.</br>Default: 20mM. Minimum: 1mM. Maximum: 100mM.</div>
+                </div>
+                <div class="separator"></div>
+                
+                
+                <!-- Individual display of curves for the icp experiments -->
+                <div id="showIcpENaFld" class="fld">
+                    <p class="fldLabel">Show E<sub>Na</sub></p><input class="fldBox button bold" type="button" value="YES" id="showIcpENa" onclick="Main(this);">
+                    <p class="fldInfo">i</p><div class="fldTooltip"><div class="fldTooltip-triangle"></div>Visibility of the E<sub>Na</sub> curve.</div>
+                </div>
+                <div id="showIcpEKFld" class="fld">
+                    <p class="fldLabel">Show E<sub>K</sub></p><input class="fldBox button bold" type="button" value="YES" id="showIcpEK" onclick="Main(this);">
+                    <p class="fldInfo">i</p><div class="fldTooltip"><div class="fldTooltip-triangle"></div>Visibility of the E<sub>K</sub> curve.</div>
+                </div>
+                <div id="showIcpIStimFld" class="fld">
+                    <p class="fldLabel">Show I<sub>Stim</sub></p><input class="fldBox button bold" type="button" value="YES" id="showIcpIStim" onclick="Main(this);">
+                    <p class="fldInfo">i</p><div class="fldTooltip"><div class="fldTooltip-triangle"></div>Visibility of the I<sub>Stim</sub> curve.</div>
+                </div>
+                <div id="showIcpEmFld" class="fld">
+                    <p class="fldLabel">Show E<sub>m</sub></p><input class="fldBox button bold" type="button" value="YES" id="showIcpEm" onclick="Main(this);">
+                    <p class="fldInfo">i</p><div class="fldTooltip"><div class="fldTooltip-triangle"></div>Visibility of the E<sub>m</sub> curve.</div>
+                </div>
+                <div id="showIcpgNaFld" class="fld">
+                    <p class="fldLabel">Show g<sub>Na</sub></p><input class="fldBox button bold" type="button" value="NO" id="showIcpgNa" onclick="Main(this);">
+                    <p class="fldInfo">i</p><div class="fldTooltip"><div class="fldTooltip-triangle"></div>Visibility of the g<sub>Na</sub> curve.</div>
+                </div>
+                <div id="showIcpgKFld" class="fld">
+                    <p class="fldLabel">Show g<sub>K</sub></p><input class="fldBox button bold" type="button" value="NO" id="showIcpgK" onclick="Main(this);">
+                    <p class="fldInfo">i</p><div class="fldTooltip"><div class="fldTooltip-triangle"></div>Visibility of the g<sub>K</sub> curve.</div>
+                </div>
+                
+                
+                <!-- Individual display of curves for the vcp experiments -->
+                <div id="showVcpINaFld" class="fld" style="display: none;">
+                    <p class="fldLabel">Show I<sub>Na</sub></p><input class="fldBox button bold" type="button" value="YES" id="showVcpINa" onclick="Main(this);">
+                    <p class="fldInfo">i</p><div class="fldTooltip"><div class="fldTooltip-triangle"></div>Visibility of the I<sub>Na</sub> curve.</div>
+                </div>
+                <div id="showVcpIKFld" class="fld" style="display: none;">
+                    <p class="fldLabel">Show I<sub>K</sub></p><input class="fldBox button bold" type="button" value="YES" id="showVcpIK" onclick="Main(this);">
+                    <p class="fldInfo">i</p><div class="fldTooltip"><div class="fldTooltip-triangle"></div>Visibility of the I<sub>K</sub> curve.</div>
+                </div>
+                <div id="showVcpImFld" class="fld" style="display: none;">
+                    <p class="fldLabel">Show I<sub>m</sub></p><input class="fldBox button bold" type="button" value="YES" id="showVcpIm" onclick="Main(this);">
+                    <p class="fldInfo">i</p><div class="fldTooltip"><div class="fldTooltip-triangle"></div>Visibility of the I<sub>m</sub> curve.</div>
+                </div>
+                <div id="showVcpEStimFld" class="fld" style="display: none;">
+                    <p class="fldLabel">Show E<sub>Stim</sub></p><input class="fldBox button bold" type="button" value="NO" id="showVcpEStim" onclick="Main(this);">
+                    <p class="fldInfo">i</p><div class="fldTooltip"><div class="fldTooltip-triangle"></div>Visibility of the E<sub>Stim</sub> curve.</div>
+                </div>
+                <div id="showVcpgNaFld" class="fld" style="display: none;">
+                    <p class="fldLabel">Show g<sub>Na</sub></p><input class="fldBox button bold" type="button" value="NO" id="showVcpgNa" onclick="Main(this);">
+                    <p class="fldInfo">i</p><div class="fldTooltip"><div class="fldTooltip-triangle"></div>Visibility of the g<sub>Na</sub> curve.</div>
+                </div>
+                <div id="showVcpgKFld" class="fld" style="display: none;">
+                    <p class="fldLabel">Show g<sub>K</sub></p><input class="fldBox button bold" type="button" value="NO" id="showVcpgK" onclick="Main(this);">
+                    <p class="fldInfo">i</p><div class="fldTooltip"><div class="fldTooltip-triangle"></div>Visibility of the g<sub>K</sub> curve.</div>
+                </div>
+                
+                
+                <!-- TTX and TEA fields for the vcp experiments -->
+                <div id="useTtxFld" class="fld" style="display: none;">
+                    <p class="fldLabel">Use TTX</p><input class="fldBox button bold" type="button" value="NO" id="useTtx" onclick="Main(this);">
+                    <p class="fldInfo">i</p><div class="fldTooltip"><div class="fldTooltip-triangle"></div>TTX (Tetrodoxin) blocks voltage-dependent Na<sup>+</sup> channels in nerve cells.</div>
+                </div>
+                <div id="useTeaFld" class="fld" style="display: none;">
+                    <p class="fldLabel">Use TEA</p><input class="fldBox button bold" type="button" value="NO" id="useTea" onclick="Main(this);">
+                    <p class="fldInfo">i</p><div class="fldTooltip"><div class="fldTooltip-triangle"></div>TEA (Tetraethylammonium) blocks voltage-dependent K<sup>+</sup> channels in nerve cells.</div>
+                </div>
+                <div class="separator"></div>
+                
+                
+                <!-- Information -->
+                <p class="fldExplanation"><span><span class="bold">/!\</span> Each curve has its own unit <span class="bold">/!\</span></span></p>
+                <p class="fldExplanation"><span>Ctrl+F5 (or Cmd+F5) to reset</span></p>
+                <p class="fldExplanation"><span>Click-and-drag to zoom in</span></p>
+                <p class="fldExplanation"><span>Double-click to zoom out</span></p>
+                
+            </div>
+        </div>
+        <div id="pan2" class="pan">
+            <div id="innerPan2">
+                <div class="invisibleSeparator"></div>
+                <a href="http://www.ncbi.nlm.nih.gov/pmc/articles/PMC1392413/" class="link bold">Download Original Paper</a>
+            </div>
+        </div>
+        <div id="pan3" ondblclick="Reset();"></div>
+    </body>
+    
+    <script type="text/javascript" src="lib/dygraph-combined-dev.js"></script>
+    <script type="text/javascript" src="src/Hodhux.js"></script>
+    <script>Main()</script>
+    
+</html>
