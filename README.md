@@ -7,3 +7,5 @@ Here's a screenshot of the current-clamp simulation:
 And here's a screenshot of the voltage-clamp simulation:
 
 ![alt text](https://raw.githubusercontent.com/Bennettson/Hodhux/master/img/VC.png "VC")
+
+To use Hodhux, simply download and extract the .zip, and open Hodhux.html in your browser.
