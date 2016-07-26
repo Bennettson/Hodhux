@@ -2,10 +2,10 @@ Hodhux simulates current-clamp and voltage-clamp experiments with the [Hodgkin-H
 
 Here's a screenshot of the current-clamp simulation:
 
-![alt text](https://raw.githubusercontent.com/Bennettson/Hodhux/master/img/IC.png "IC")
+![Current Clamp](https://raw.githubusercontent.com/Bennettson/Hodhux/master/img/IC.png "IC")
 
 And here's a screenshot of the voltage-clamp simulation:
 
-![alt text](https://raw.githubusercontent.com/Bennettson/Hodhux/master/img/VC.png "VC")
+![Voltage Clamp](https://raw.githubusercontent.com/Bennettson/Hodhux/master/img/VC.png "VC")
 
 To use Hodhux, simply download and extract the .zip, and open Hodhux.html in your browser.
